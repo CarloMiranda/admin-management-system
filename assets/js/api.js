@@ -33,6 +33,12 @@ try {
     itemBtn.addEventListener('click', addItem);
 } catch (e) {}
 
+// Edit category button
+try {
+    const editCategoryBtn = document.querySelector('#edit-category-btn');
+    editCategoryBtn.addEventListener('click', editCategory);
+} catch (e) {}
+
 
 // -----------------------------------------\\
 //     Function to handle login
@@ -110,7 +116,7 @@ function addCategory() {
         },
         body: JSON.stringify({
             category: newCategory,
-            slug: newSlug  // Include the slug in the request payload
+            slug: newSlug,  // Include the slug in the request payload
         }),
     })
     .then((response) => response.json())
@@ -193,7 +199,7 @@ function generateSlug(str) {
 function getCategory() {
     const categoryTableBody = document.querySelector('#categoryTableBody');
 
-    fetch(endpoint + "getcategory.php")
+    fetch(endpoint + "getcategories.php")
     .then((response) => response.json())
     .then((data) => {
         if (window.location.href.includes("categories.html")) {
@@ -216,7 +222,7 @@ function getCategory() {
                         </td>
                     
                         <td>
-                            <a href="#">
+                            <a href="editcategory.html?id=${category.id}">
                                 <svg class="filament-link-icon w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
                                 </svg>
@@ -231,16 +237,17 @@ function getCategory() {
                     `
                 });
                 categoryTableBody.innerHTML = `
-                ${categoryTable}`
-                
-            console.log(data)
+                ${categoryTable}`;
 
+            
         } else if (window.location.href.includes("dashboard.html")) {
 
             document.querySelector('#total-category').innerHTML = `
             <h3>${data.length}</h3>
-            <p>Total Category</p>`
+            <p>Total Category</p>`;
+
         } else if (window.location.href.includes("create-brand.html")) {
+
             let categoryOption = "";
                 data.forEach((category) => {
                     categoryOption += `
@@ -250,9 +257,76 @@ function getCategory() {
                 document.querySelector('#select-category').innerHTML = `
                     <option value="0" selected>Choose Category</option>
                     ${categoryOption}
-                `
+                `;
+
         }
-        
+      
+    });
+}
+
+
+// -----------------------------------------\\
+//     Function to handle show category
+//------------------------------------------//
+function showCategory() {
+
+    // Get category ID from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryId = urlParams.get('id');
+    
+    // Fetch category data based on the ID
+    fetch(endpoint + `getcategory.php?id=${categoryId}`)
+        .then(response => response.json())
+        .then(data => {
+            
+            // Populate the input fields and select options with the retrieved data
+            document.querySelector('#edit-category').value = data.category;
+            document.querySelector('#edit-slug').value = data.slug;
+        });
+
+}
+
+// -----------------------------------------\\
+//     Function to handle edit category
+//------------------------------------------// 
+function editCategory() {
+    
+    // Get category ID from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryId = urlParams.get('id');
+    const categoryNameInput = document.querySelector('#edit-category');
+    const slugInput = document.querySelector('#edit-slug');
+
+    // Get the category name from the input
+    const newCategory = categoryNameInput.value;
+
+    // Check if the input is filled
+    if (!newCategory.trim()) {
+        alert("Please enter a category name");
+        return;
+    }
+
+    // Generate a slug from the category name
+    const newSlug = generateSlug(newCategory);
+
+    // Update the slug input
+    slugInput.value = newSlug;
+
+    // Make the API request
+    fetch(endpoint + "editcategory.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id: categoryId,
+            category: newCategory,
+            slug: newSlug  // Include the slug in the request payload
+        }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        alert(data.message);
     });
 }
 
