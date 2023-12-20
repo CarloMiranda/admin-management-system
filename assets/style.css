@@ -1,0 +1,30 @@
+
+
+.collapse {
+    display: flex;
+    justify-content: space-between;
+}
+
+.admin img {
+    width: 40px;
+    border-radius: 20px;
+    background: rgb(113, 177, 242);
+    padding: 5px;
+}
+
+.logout-btn ion-icon {
+    font-size: 25px;
+    margin-left: 10px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {background-color: #f2f2f2;}
