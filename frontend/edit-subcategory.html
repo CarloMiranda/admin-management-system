@@ -29,7 +29,7 @@
 				<div class="navbar-nav pl-2">
 					<ol class="breadcrumb p-0 m-0 bg-white">
 						<li class="breadcrumb-item"><a href="brands.html">Brands</a></li>
-						<li class="breadcrumb-item active">Create</li>
+						<li class="breadcrumb-item active">Edit</li>
 					</ol>
 				</div>
 				
@@ -90,6 +90,12 @@
 								</a>
 							</li>
 							<li class="nav-item">
+								<a href="subcategory.html" class="nav-link">
+									<i class="nav-icon fas fa-file-alt"></i>
+									<p>Sub Category</p>
+								</a>
+							</li>
+							<li class="nav-item">
 								<a href="brands.html" class="nav-link">
 									<svg class="h-6 nav-icon w-6 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
 										<path stroke-linecap="round" stroke-linejoin="round" d="M16 4v12l-4-2-4 2V4M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -128,10 +134,10 @@
 					<div class="container-fluid my-2">
 						<div class="row mb-2">
 							<div class="col-sm-6">
-								<h1>Edit Category</h1>
+								<h1>Edit Subcategory</h1>
 							</div>
 							<div class="col-sm-6 text-right">
-								<a href="categories.html" class="btn btn-primary">Back</a>
+								<a href="subcategory.html" class="btn btn-primary">Back</a>
 							</div>
 						</div>
 					</div>
@@ -142,12 +148,27 @@
 					<!-- Default box -->
 					<div class="container-fluid">
 						<div class="card">
-							<div class="card-body">							
+							<div class="card-body">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="mb-3">
+                                            <label>Current Category</label>
+                                            <option id="current-category" class="border p-1"></option>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="category-option">Change Category</label>
+                                            <select id="change-category" class="custom-select">
+                                            </select>
+                                        </div>
+                                    </div>
+								</div>								
 								<div class="row">
 									<div class="col-md-6">
 										<div class="mb-3">
 											<label for="name">Name</label>
-											<input type="text" name="name" id="edit-category" class="form-control" placeholder="Name">	
+											<input type="text" name="name" id="edit-subcategory" class="form-control" placeholder="Name">	
 										</div>
 									</div>
 									<div class="col-md-6">
@@ -160,8 +181,8 @@
 							</div>							
 						</div>
 						<div class="pb-5 pt-3">
-							<button id="edit-category-btn" class="btn btn-primary">Confirm</button>
-							<a href="categories.html" class="btn btn-outline-dark ml-3">Cancel</a>
+							<button id="edit-subcategory-btn" class="btn btn-primary">Create</button>
+							<a href="subcategory.html" class="btn btn-outline-dark ml-3">Cancel</a>
 						</div>
 					</div>
 					<!-- /.card -->
@@ -185,7 +206,8 @@
 		<!-- API -->
 		<script src="../assets/js/api.js"></script>
 		<script>
-			showCategory();
+			getCategory();
+            showSubcategory();
 		</script>
 	</body>
 </html>

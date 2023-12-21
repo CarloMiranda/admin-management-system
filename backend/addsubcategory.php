@@ -7,21 +7,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
 
     // Extract data from the JSON payload
-    $brand = $data["brand"];
+    $subcategory = $data["subcategory"];
     $slug = $data['slug'];
+    $category_id = $data["category_id"];
 
-    // Check if brand exists using prepared statement to prevent SQL injection
-    $checkSql = "SELECT * FROM brand WHERE brand = ?";
+    // Check if category exists using prepared statement to prevent SQL injection
+    $checkSql = "SELECT * FROM subcategory WHERE subcategory = ?";
     $stmtCheck = $conn->prepare($checkSql);
-    $stmtCheck->bind_param("s", $brand);
+    $stmtCheck->bind_param("s", $subcategory);
     $stmtCheck->execute();
     $resultCheck = $stmtCheck->get_result();
 
     if ($resultCheck->num_rows === 0) {
-        // Insert brand into the database
-        $insertSql = "INSERT INTO brand (brand, slug) VALUES (?, ?)";
+        // Insert category into the database
+        $insertSql = "INSERT INTO subcategory (subcategory, slug, category_id) VALUES (?, ?, ?)";
         $stmtInsert = $conn->prepare($insertSql);
-        $stmtInsert->bind_param("ss", $brand, $slug);
+        $stmtInsert->bind_param("ssi", $subcategory, $slug, $category_id);
 
         if ($stmtInsert->execute()) {
             $response = array(
@@ -33,14 +34,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $response = array(
                 'success' => false,
-                'message' => 'Failed to add brand. Error: ' . $conn->error
+                'message' => 'Failed to add subcategory. Error: ' . $conn->error
             );
             echo json_encode($response);
         }
     } else {
         $response = array(
             'success' => false,
-            'message' => 'Brand already exists.'
+            'message' => 'Subcategory already exists.'
         );
         echo json_encode($response);
     }

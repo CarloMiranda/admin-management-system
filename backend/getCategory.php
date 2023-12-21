@@ -17,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 'id' => $row['id'],
                 'category' => $row['category'],
                 'slug' => $row['slug'],
-                'status' => $row['status']
             );
 
             $json = json_encode($category);

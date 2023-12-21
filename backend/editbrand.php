@@ -8,26 +8,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Extract data from the JSON payload
     $id = $data['id'];
-    $category = $data['category'];
+    $brand = $data['brand'];
     $slug = $data['slug'];
 
-    // Check if the category already exists
-    $checkSql = "SELECT id FROM category WHERE category = ? AND id != ?";
+    // Check if the brand already exists
+    $checkSql = "SELECT id FROM brand WHERE brand = ? AND id != ?";
     $stmtCheck = $conn->prepare($checkSql);
-    $stmtCheck->bind_param("si", $category, $id);
+    $stmtCheck->bind_param("si", $brand, $id);
     $stmtCheck->execute();
     $resultCheck = $stmtCheck->get_result();
 
     if ($resultCheck->num_rows > 0 ) {
         $response = array(
             'success' => false,
-            'message' => 'Category already exists.' . $conn->error
+            'message' => 'brand already exists.' . $conn->error
         );
         echo json_encode($response);
 
     } else {
         // Check if the data has changed
-        $checkChangeSql = "SELECT category, slug FROM category WHERE id = ?";
+        $checkChangeSql = "SELECT brand, slug FROM brand WHERE id = ?";
         $stmtCheckChange = $conn->prepare($checkChangeSql);
         $stmtCheckChange->bind_param("i", $id);
         $stmtCheckChange->execute();
@@ -37,28 +37,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $row = $resultCheckChange->fetch_assoc();
 
             // Check if the data is unchanged
-            if ($category === $row['category'] && $slug === $row['slug']) {
+            if ($brand === $row['brand'] && $slug === $row['slug']) {
                 $response = array(
                     'success' => true,
                     'message' => 'No changes detected.'
                 );
                 echo json_encode($response);
             } else {
-                // Update category in the database
-                $updateSql = "UPDATE category SET category = ?, slug = ?, updated_at = NOW() WHERE id = ?";
+                // Update brand in the database
+                $updateSql = "UPDATE brand SET brand = ?, slug = ?, updated_at = NOW() WHERE id = ?";
                 $stmtUpdate = $conn->prepare($updateSql);
-                $stmtUpdate->bind_param("ssi", $category, $slug, $id);
+                $stmtUpdate->bind_param("ssi", $brand, $slug, $id);
 
                 if ($stmtUpdate->execute()) {
                     $response = array(
                         'success' => true,
-                        'message' => 'Category updated successfully.'
+                        'message' => 'brand updated successfully.'
                     );
                     echo json_encode($response);
                 } else {
                     $response = array(
                         'success' => false,
-                        'message' => 'Failed to update category. Error: ' . $conn->error
+                        'message' => 'Failed to update brand. Error: ' . $conn->error
                     );
                     echo json_encode($response);
                 }
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $response = array(
                 'success' => false,
-                'message' => 'Category not found.'
+                'message' => 'Brand not found.'
             );
             echo json_encode($response);
         }
