@@ -249,18 +249,13 @@
                                         <h2 class="h4  mb-3">Product category</h2>
                                         <div class="mb-3">
                                             <label for="category">Category</label>
-                                            <select name="category" id="category" class="form-control">
-                                                <option value="">Electronics</option>
-                                                <option value="">Clothes</option>
-                                                <option value="">Furniture</option>
+                                            <select id="select-category" name="category" class="form-control">
                                             </select>
                                         </div>
                                         <div class="mb-3">
                                             <label for="category">Sub category</label>
                                             <select name="sub_category" id="sub_category" class="form-control">
-                                                <option value="">Mobile</option>
-                                                <option value="">Home Theater</option>
-                                                <option value="">Headphones</option>
+                                                
                                             </select>
                                         </div>
                                     </div>
@@ -269,12 +264,7 @@
                                     <div class="card-body">	
                                         <h2 class="h4 mb-3">Product brand</h2>
                                         <div class="mb-3">
-                                            <select name="status" id="status" class="form-control">
-                                                <option value="">Apple</option>
-                                                <option value="">Vivo</option>
-                                                <option value="">HP</option>
-                                                <option value="">Samsung</option>
-                                                <option value="">DELL</option>
+                                            <select name="status" id="brand" class="form-control">
                                             </select>
                                         </div>
                                     </div>
@@ -322,6 +312,11 @@
         <script src="../assets/plugins/dropzone/dropzone.js"></script>
 		<!-- API -->
 		<script src="../assets/js/api.js"></script>
+        <script>
+            getCategory();
+            getSubcategoryByCategory();
+            getBrand();
+        </script>
         <script>
             Dropzone.autoDiscover = false;    
             $(function () {

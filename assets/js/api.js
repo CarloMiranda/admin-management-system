@@ -210,7 +210,7 @@ function getCategory() {
             <h3>${data.length}</h3>
             <p>Total Category</p>`;
 
-        } else if (window.location.href.includes("create-subcategory.html")) {
+        } else if (window.location.href.includes("create-subcategory.html") || window.location.href.includes("create-product.html")) {
 
             let categoryOption = "";
                 data.forEach((category) => {
@@ -235,9 +235,44 @@ function getCategory() {
                 <option value="0" selected>Choose Category</option>
                 ${categoryOption}
             `;
+
         }
       
     });
+}
+
+
+// -----------------------------------------\\
+//     Function to handle show subcategory by category ID
+//------------------------------------------//
+function getSubcategoryByCategory() {
+
+    // Attach an event listener to the select element
+    document.querySelector('#select-category').addEventListener('change', function () {
+    // Get the selected category ID
+    const selectedCategoryId = this.value;
+
+    // Log or use the selected category ID as needed
+    console.log(selectedCategoryId);
+
+    // Fetch subcategory data based on the selected category ID
+    fetch(endpoint + `getsubcategorybycategory.php?id=${selectedCategoryId}`)
+        .then(response => response.json())
+        .then(data => {
+
+            // Handle the subcategory data
+            let subcategoryOption;
+            data.forEach((subcategory) => {
+                subcategoryOption += `
+                    <option value="${subcategory.id}">${subcategory.subcategory}</option>
+                `
+            });
+            document.querySelector('#sub_category').innerHTML = subcategoryOption;
+            console.log(subcategoryOption);
+             
+        })
+});
+
 }
 
 
@@ -255,7 +290,6 @@ function showCategory() {
         .then(response => response.json())
         .then(data => {
             
-            // Populate the input fields and select options with the retrieved data
             document.querySelector('#edit-category').value = data.category;
             document.querySelector('#edit-slug').value = data.slug;
         });
@@ -682,6 +716,17 @@ function getBrand() {
             document.querySelector('#total-brand').innerHTML = `
                 <h3>${data.length}</h3>
                 <p>Total Brand</p>`
+        } else if (window.location.href.includes('create-product.html')) {
+
+            let brandOption;
+            data.forEach((brand) => {
+                brandOption += `
+                <option value="${brand.id}">${brand.brand}</option>
+                `
+            })
+            document.querySelector('#brand').innerHTML = `
+                ${brandOption}
+            `
         }
         
     });
